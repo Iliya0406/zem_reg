@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Todo List</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #5c6bc0;
+            --primary-hover: #3f51b5;
+            --delete-color: #e57373;
+            --delete-hover: #ef5350;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .todo-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        button.add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button.add-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9f9f9;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+
+        li.completed .task-text {
+            text-decoration: line-through;
+            color: #888888;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .task-left input[type="checkbox"] {
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .task-text {
+            font-size: 1rem;
+            word-break: break-all;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: var(--delete-color);
+            border: 1px solid var(--delete-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background-color: var(--delete-hover);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <h1>My Tasks</h1>
+        <h2>So help me God !</h2>
+        
+        <div class="input-section">
+            <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off">
+            <button class="add-btn" id="add-button">Add</button>
+        </div>
+
+       
+        <h3>Praise to my God !</h3>
+       
+
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+        // DOM Elements
+        const todoInput = document.getElementById('todo-input');
+        const addButton = document.getElementById('add-button');
+        const todoList = document.getElementById('todo-list');
+
+        // Load tasks from LocalStorage or initialize an empty array
+        let tasks = JSON.parse(localStorage.getItem('todos')) || [];
+
+        // Function to save tasks to LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('todos', JSON.stringify(tasks));
+        }
+
+        // Function to render the tasks on the screen
+        function renderTasks() {
+            todoList.innerHTML = ''; // Clear current list
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                if (task.completed) {
+                    li.classList.add('completed');
+                }
+
+                li.innerHTML = `
+                    <div class="task-left" onclick="toggleTask(${index})">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''}>
+                        <span class="task-text">${escapeHTML(task.text)}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
+                `;
+
+                todoList.appendChild(li);
+            });
+        }
+
+        // Function to add a new task
+        function addTask() {
+            const taskText = todoInput.value.trim();
+            if (taskText === '') return; // Don't add empty tasks
+
+            tasks.push({
+                text: taskText,
+                completed: false
+            });
+
+            todoInput.value = ''; // Clear input field
+            saveToLocalStorage();
+            renderTasks();
+        }
+
+        // Function to toggle task completion status
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveToLocalStorage();
+            renderTasks();
+        }
+
+        // Function to delete a task
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveToLocalStorage();
+            renderTasks();
+        }
+
+        // Helper function to prevent XSS (Security best practice)
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Event Listeners
+        addButton.addEventListener('click', addTask);
+        
+        todoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Initial render when page loads
+        renderTasks();
+    </script>
+
+</body>
+</html>
