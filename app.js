@@ -61,7 +61,7 @@ window.signup = async function(){
     if(
         !fullName ||
         !phone ||
-        |profession||
+        !profession||
         !residence ||
         !ageGroup ||
         !maritalStatus ||
