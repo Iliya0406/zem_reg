@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Administrator Dashboard</h1>
+
+    <h2 id="adminName"></h2>
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <h3>Total Participants</h3>
+            <p id="totalParticipants">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Programs</h3>
+            <p id="totalPrograms">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Registrations</h3>
+            <p id="totalRegistrations">0</p>
+        </div>
+
+    </div>
+
+    <h2>Create Program</h2>
+
+    <input type="text"
+           id="title"
+           placeholder="Program Title">
+
+    <input type="text"
+           id="description"
+           placeholder="Description">
+
+    <input type="date"
+           id="eventDate">
+
+    <input type="text"
+           id="venue"
+           placeholder="Venue">
+
+    <button id="saveProgramBtn" onclick="createProgram()">
+        Create Program
+    </button>
+
+    <button
+        id="cancelEditBtn"
+        onclick="cancelEdit()"
+        style="display:none;">
+
+        Cancel
+
+    </button>
+
+    <h2>Programs</h2>
+
+    <div id="programList"></div>
+
+
+<!-- Section -->
+    <h2>Participants</h2>
+
+    <input
+        type="text"
+        id="searchParticipant"
+        placeholder="Search participant..."
+        onkeyup="searchParticipants()">
+
+    <div id="participantsList"></div>
+
+<!-- Section -->
+    <h2>Program Registrations</h2>
+
+    <!-- <button onclick="exportRegistrationsCSV()">
+        Export Registrations CSV
+    </button> -->
+
+    <div id="registrationsList"></div>
+
+    <h5>End of Records</h5>
+
+    <button onclick="exportRegistrationsExcel()">
+        Export Registrations (Excel)
+    </button>
+
+    <button onclick="logout()">
+            Logout
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>

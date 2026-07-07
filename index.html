@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program Registration Portal</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <img src="tt.png" alt="threshersTeam">
+
+    <h1>Program Registration Portal</h1>
+
+    <h2>New Participant Registration</h2>
+   
+    <input
+        type="text"
+        id="fullName"
+        placeholder="Full Name">
+
+    <input
+        type="text"
+        id="phone"
+        placeholder="Phone Number">
+
+    <input
+        type="text"
+        id="profession"
+        placeholder="Profession / Vocation">
+
+    <input
+        type="text"
+        id="residence"
+        placeholder="Area of Residence"> 
+
+    <select id="ageGroup" style="text-align:center; margin:15px 0;">
+
+        <option value="">
+            Select Age Group
+        </option>
+
+        <option value="16-19">16-19</option>
+
+        <option value="20-30">20-30</option>
+
+        <option value="31-40">31-40</option>
+
+        <option value="41-50">41-50</option>
+
+        <option value="Above 50">
+            Above 50
+        </option>
+
+    </select>
+
+    <select id="maritalStatus" style="text-align:center; margin:15px 0;">
+
+        <option value="">
+            Select Marital Status
+        </option>
+
+        <option value="Single">
+            Single
+        </option>
+
+        <option value="Married">
+            Married
+        </option>
+
+        <option value="Engaged">
+            Engaged
+        </option>
+
+        <option value="Separated">
+            Separated
+        </option>
+
+        <option value="Divorced">
+            Divorced
+        </option>
+
+        <option value="Prefer not to say">
+            Prefer not to say
+        </option>
+
+    </select>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password">
+
+    <button onclick="signup()">
+        Create Account
+    </button>
+
+    <p style="text-align:center; margin:15px 0;">
+        Already have an account?
+    </p>
+
+    <button class="login-btn"
+            onclick="window.location.href='login.html'">
+        Login
+    </button>
+
+    <p id="message"></p>
+    
+    
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Your JavaScript -->
+    <script src="app.js"></script>
+
+</body>
+</html>
